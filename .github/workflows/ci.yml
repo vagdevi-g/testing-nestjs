@@ -47,39 +47,53 @@ jobs:
       #   run: pnpx prisma generate --schema apps/prisma-sample/prisma/schema.prisma
       - name: pnpm test
         run: pnpm nx test ${{ matrix.test }}
-
-  e2e-test:
-    runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-        #node-version: [18.x, 20.x]
-    needs: [unit-tests]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20
-      - name: Start Docker-Compose
-        run: docker-compose up -d
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 8
-          run_install: true
-      - name: Run tests
-        run: pnpm run test:e2e
-      - name: Stop Docker-Compose
-        run: docker-compose down
-
-  automerge:
-    needs: e2e-test
-    if: contains(github.event.pull_request.user.login, 'dependabot')
-    runs-on: ubuntu-latest
-    steps:
-      - name: automerge
-        uses: 'pascalgn/automerge-action@v0.12.0'
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          MERGE_LABELS: ''
-          MERGE_METHOD: rebase
+          SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}'
+          SONAR_HOST_URL: '${{ secrets.SONAR_HOST_URL }}'
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}'
+          SONAR_HOST_URL: '${{ secrets.SONAR_HOST_URL }}'
+      - name: Here is SonarQube Quality Gate Status value..
+        run: >-
+          echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+  # e2e-test:
+  #   runs-on: ubuntu-latest
+  #   # strategy:
+  #   #   matrix:
+  #       #node-version: [18.x, 20.x]
+  #   needs: [unit-tests]
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Use Node.js 
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 20
+  #     - name: Start Docker-Compose
+  #       run: docker-compose up -d
+  #     - name: Install pnpm
+  #       uses: pnpm/action-setup@v2.0.1
+  #       with:
+  #         version: 8
+  #         run_install: true
+  #     - name: Run tests
+  #       run: pnpm run test:e2e
+  #     - name: Stop Docker-Compose
+  #       run: docker-compose down
+
+  # automerge:
+  #   needs: e2e-test
+  #   if: contains(github.event.pull_request.user.login, 'dependabot')
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: automerge
+  #       uses: 'pascalgn/automerge-action@v0.12.0'
+  #       env:
+  #         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+  #         MERGE_LABELS: ''
+  #         MERGE_METHOD: rebase
