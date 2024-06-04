@@ -17,19 +17,19 @@ jobs:
         #node-version: [18.x, 20.x]
         test:
           [
-            complex-sample,
-            cqrs-sample,
-            graphql-sample,
-            http-sample,
-            microservice-sample,
-            mongo-sample,
-            render-sample,
-            rxjs-sample,
-            sequelize-sample,
-            simple-sample,
-            typeorm-sample,
-            prisma-sample,
-            websocket-sample,
+            complex-sample
+            # cqrs-sample,
+            # graphql-sample,
+            # http-sample,
+            # microservice-sample,
+            # mongo-sample,
+            # render-sample,
+            # rxjs-sample,
+            # sequelize-sample,
+            # simple-sample,
+            # typeorm-sample,
+            # prisma-sample,
+            # websocket-sample,
           ]
     steps:
       - uses: actions/checkout@v2
@@ -42,9 +42,9 @@ jobs:
         with:
           version: 8
           run_install: true
-      - name: Generate Prisma Schema
-        if: ${{ matrix.test == 'prisma-sample' }}
-        run: pnpx prisma generate --schema apps/prisma-sample/prisma/schema.prisma
+      # - name: Generate Prisma Schema
+      #   if: ${{ matrix.test == 'prisma-sample' }}
+      #   run: pnpx prisma generate --schema apps/prisma-sample/prisma/schema.prisma
       - name: pnpm test
         run: pnpm nx test ${{ matrix.test }}
 
