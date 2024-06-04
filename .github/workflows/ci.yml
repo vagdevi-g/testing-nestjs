@@ -10,26 +10,27 @@ on:
   #   - cron: '0 0 * * *'
 
 jobs:
-  unit-tests:
+  build:
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node-version: [18.x, 20.x]
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
         test:
           [
-            complex-sample
-            # cqrs-sample,
-            # graphql-sample,
-            # http-sample,
-            # microservice-sample,
-            # mongo-sample,
-            # render-sample,
-            # rxjs-sample,
-            # sequelize-sample,
-            # simple-sample,
-            # typeorm-sample,
-            # prisma-sample,
-            # websocket-sample,
+            complex-sample,
+            cqrs-sample,
+            graphql-sample,
+            http-sample,
+            microservice-sample,
+            mongo-sample,
+            render-sample,
+            rxjs-sample,
+            sequelize-sample,
+            simple-sample,
+            typeorm-sample,
+            prisma-sample,
+            websocket-sample,
           ]
     steps:
       - uses: actions/checkout@v2
