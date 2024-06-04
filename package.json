@@ -148,7 +148,7 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "./coverage",
-    "testResultsProcessor": "jest-sonar-reporter"
+    "testResultsProcessor": "jest-sonar-reporter",
     "testEnvironment": "node",
     "roots": [
       "<rootDir>/apps/"
