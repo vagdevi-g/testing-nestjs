@@ -50,8 +50,8 @@ jobs:
 
   e2e-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
+    # strategy:
+    #   matrix:
         #node-version: [18.x, 20.x]
     needs: [unit-tests]
     steps:
