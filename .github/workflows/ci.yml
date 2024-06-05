@@ -12,25 +12,25 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        #node-version: [18.x, 20.x]
-        test:
-          [
-            complex-sample
-            # cqrs-sample,
-            # graphql-sample,
-            # http-sample,
-            # microservice-sample,
-            # mongo-sample,
-            # render-sample,
-            # rxjs-sample,
-            # sequelize-sample,
-            # simple-sample,
-            # typeorm-sample,
-            # prisma-sample,
-            # websocket-sample,
-          ]
+    # strategy:
+    #   matrix:
+    #     #node-version: [18.x, 20.x]
+    #     test:
+    #       [
+    #         complex-sample
+    #         # cqrs-sample,
+    #         # graphql-sample,
+    #         # http-sample,
+    #         # microservice-sample,
+    #         # mongo-sample,
+    #         # render-sample,
+    #         # rxjs-sample,
+    #         # sequelize-sample,
+    #         # simple-sample,
+    #         # typeorm-sample,
+    #         # prisma-sample,
+    #         # websocket-sample,
+    #       ]
     steps:
       - uses: actions/checkout@v2
       - name: Use NodeJS
@@ -48,7 +48,7 @@ jobs:
       #   if: ${{ matrix.test == 'prisma-sample' }}
       #   run: pnpx prisma generate --schema apps/prisma-sample/prisma/schema.prisma
       - name: pnpm test
-        run: pnpm nx test ${{ matrix.test }}
+        run: pnpm nx test complex-sample
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
